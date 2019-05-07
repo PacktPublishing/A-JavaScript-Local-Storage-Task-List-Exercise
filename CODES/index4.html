@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Local Storage Exercise</title>
+    <style>
+    
+    </style>
+    </head>
+    <body>
+    <div class="container">
+        <ul class="myTasks">
+
+        </ul>
+        <form class="taskAdder">
+            <input type="text" name="task" placeholder="New Task Item" required>
+            <input type="submit" value="+Add">
+        </form>
+        </div>
+    <script>
+        
+
+        
+        
+        
+        
+        const taskAdder = document.querySelector('.taskAdder');
+        const myTasks = document.querySelector('.myTasks');
+        const tasks = [];
+        taskAdder.addEventListener('submit',addTask);
+        myTasks.addEventListener('click',toggleDone);
+
+        function addTask(e){
+            e.preventDefault();
+            //console.log(this);
+            const textTask = this.querySelector('[name=task]').value;
+            const task = {
+                textTask,done:false
+            }
+            //console.log(textTask);
+            tasks.push(task);
+            outputTasks();
+            //console.log(tasks);
+            this.reset();
+        }
+        
+        function outputTasks(){
+            let html = tasks.map(function (data,i){
+                return '<li><div data-index='+i+'>'+data.textTask+'</div></li>';
+            })
+            myTasks.innerHTML = html.join('');
+        }
+        
+        function toggleDone(){
+            console.log('done');
+        }
+        
+
+       //console.dir(document); 
+        
+/*             var testArray = [3,5,7];
+        var testDouble = testArray.map(function(data){
+            console.log(data);
+            return data * 5;
+        })
+        console.log(testDouble);   */
+        
+        
+        
+        
+        
+        </script>
+    </body>
+</html>
+

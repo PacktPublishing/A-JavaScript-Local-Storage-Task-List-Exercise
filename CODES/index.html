@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Local Storage Exercise</title>
+    <style>
+        .done {
+            color: red;
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <ul class="myTasks"> </ul>
+        <form class="taskAdder">
+            <input type="text" name="task" placeholder="New Task Item" required>
+            <input type="submit" value="+Add"> </form>
+    </div>
+    <script>
+        const taskAdder = document.querySelector('.taskAdder');
+        const myTasks = document.querySelector('.myTasks');
+        const tasks = JSON.parse(localStorage.getItem('taskList')) || [];
+        taskAdder.addEventListener('submit', addTask);
+        myTasks.addEventListener('click', toggleDone);
+        outputTasks();
+
+        function addTask(e) {
+            e.preventDefault();
+            //console.log(this);
+            const textTask = this.querySelector('[name=task]').value;
+            const task = {
+                    textTask, done: false
+                }
+                //console.log(textTask);
+            tasks.push(task);
+            saveStorage();
+            outputTasks();
+            //console.log(tasks);
+            this.reset();
+        }
+
+        function saveStorage() {
+            localStorage.setItem('taskList', JSON.stringify(tasks));
+        }
+
+        function outputTasks() {
+            let html = tasks.map(function (data, i) {
+                let myClass = data.done ? ' done ' : '';
+                return '<li data-index=' + i + '><div  class="' + myClass + '">' + data.textTask + '<span class="remove"> x </span></div></li>';
+            })
+            myTasks.innerHTML = html.join('');
+        }
+
+        function toggleDone(e) {
+            //console.log(e);
+            const myEl = e.target;
+            const mySel = myEl.parentElement;
+            if (myEl.className === 'remove') {
+                let index = mySel.parentElement.dataset.index;
+                let temp = tasks.splice(index, 1);
+                console.log(temp);
+            }
+            else {
+                //console.log(e);
+                // console.log(tasks[mySel ]);
+                myEl.classList.toggle('done');
+                //console.log(myEl);
+                tasks[mySel.dataset.index].done = !tasks[mySel.dataset.index].done;
+            }
+            saveStorage();
+            //console.log(tasks);
+            outputTasks();
+        }
+        //console.dir(document); 
+        /*             var testArray = [3,5,7];
+                var testDouble = testArray.map(function(data){
+                    console.log(data);
+                    return data * 5;
+                })
+                console.log(testDouble);   */
+    </script>
+</body>
+
+</html>
